@@ -12,3 +12,14 @@ deployAs:
         - key: ENTRY_POINT_URI_PATH
           description: The Application entry point URI path identified during registration of Custom Application
           required: true
+      securedConfiguration:
+        - key: INTEGRATION_API_KEY
+          description: API key for the integration
+          required: true
+        
+inheritAs:
+  apiClient:
+    scopes:
+      - manage_products
+      - view_products
+      - view_product_selections

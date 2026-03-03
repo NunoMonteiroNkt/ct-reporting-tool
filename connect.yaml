@@ -1,6 +1,6 @@
-name: my-connect-app
-description: My Connect application
-vendor: My Company
+name: ct-reporting-tools
+description: CT Reporting Tools Custom Application
+vendor: Your Company Name
 version: "1.0.0"
 
 deployAs:
@@ -13,8 +13,8 @@ deployAs:
           description: The Custom Application ID is provided when you add a Custom Application in the Merchant Center
           required: true
         - key: CLOUD_IDENTIFIER
-          description: The identifier of the cloud Region
+          description: The identifier of the cloud Region that the Custom Application uses to connect to Composable Commerce
           default: 'gcp-eu'
         - key: ENTRY_POINT_URI_PATH
-          description: The Application entry point URI path
+          description: The Application entry point URI path identified during registration of Custom Application
           required: true

@@ -1,0 +1,63 @@
+import { PERMISSIONS, entryPointUriPath } from './src/constants';
+
+/**
+ * @type {import('@commercetools-frontend/application-config').ConfigOptionsForCustomApplication}
+ */
+const config = {
+  name: 'Ct Reporting Tool',
+  entryPointUriPath,
+  cloudIdentifier: 'gcp-eu',
+  env: {
+    development: {
+      initialProjectKey: 'mynkt-production',
+    },
+    production: {
+      applicationId: 'cmlfevbsn000801v25qebfuak',
+      url: 'https://app-mynkt-tmd-stag-westeurope-001.azurewebsites.net/',
+    },
+  },
+  oAuthScopes: {
+    view: ['view_products', 'view_product_selections'],
+    manage: ['manage_products'],
+  },
+  icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
+  mainMenuLink: {
+    defaultLabel: 'Template starter',
+    labelAllLocales: [],
+    permissions: [PERMISSIONS.View],
+  },
+  submenuLinks: [
+    /* {
+      uriPath: 'channels',
+      defaultLabel: 'Channels',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    }, */
+    /*  {
+       uriPath: 'materials',
+       defaultLabel: 'Materials',
+       labelAllLocales: [],
+       permissions: [PERMISSIONS.View],
+     },
+     {
+       uriPath: 'product-types',
+       defaultLabel: 'ProductTypes',
+       labelAllLocales: [],
+       permissions: [PERMISSIONS.View],
+     }, */
+    {
+      uriPath: 'all-products',
+      defaultLabel: 'All Products with Attributes',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    },
+    {
+      uriPath: 'documents',
+      defaultLabel: 'All Variants Documents',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    }
+  ],
+};
+
+export default config;

@@ -1,6 +1,4 @@
-import { PERMISSIONS } from './src/constants';
-const entryPointUriPath = process.env.ENTRY_POINT_URI_PATH;
-const derivedUrl = `https://mc.${cloudIdentifier}.commercetools.com/${entryPointUriPath}`;
+import { PERMISSIONS, entryPointUriPath } from './src/constants';
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptionsForCustomApplication}
@@ -11,11 +9,11 @@ const config = {
   cloudIdentifier: 'gcp-eu',
   env: {
     development: {
-      initialProjectKey: process.env.CLOUD_IDENTIFIER || 'gcp-eu',
+      initialProjectKey: 'my-project-key',
     },
     production: {
-      applicationId: process.env.CUSTOM_APPLICATION_ID,
-      url: process.env.PREVIEW_URL || derivedUrl,
+      applicationId: '${env:CUSTOM_APPLICATION_ID}',
+      url: '${env:APPLICATION_URL}',
     },
   },
   oAuthScopes: {
@@ -29,24 +27,6 @@ const config = {
     permissions: [PERMISSIONS.View],
   },
   submenuLinks: [
-    /* {
-      uriPath: 'channels',
-      defaultLabel: 'Channels',
-      labelAllLocales: [],
-      permissions: [PERMISSIONS.View],
-    }, */
-    /*  {
-       uriPath: 'materials',
-       defaultLabel: 'Materials',
-       labelAllLocales: [],
-       permissions: [PERMISSIONS.View],
-     },
-     {
-       uriPath: 'product-types',
-       defaultLabel: 'ProductTypes',
-       labelAllLocales: [],
-       permissions: [PERMISSIONS.View],
-     }, */
     {
       uriPath: 'all-products',
       defaultLabel: 'All Products with Attributes',

@@ -12,6 +12,9 @@ deployAs:
         - key: ENTRY_POINT_URI_PATH
           description: The Application entry point URI path
           required: true
+        - key: PREVIEW_URL
+          description: Override the application URL (useful for preview deployments)
+          required: false
 inheritAs:
   configuration:
     standardConfiguration: []

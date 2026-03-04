@@ -1,4 +1,6 @@
-import { PERMISSIONS, entryPointUriPath } from './src/constants';
+import { PERMISSIONS } from './src/constants';
+const entryPointUriPath = process.env.ENTRY_POINT_URI_PATH;
+const derivedUrl = `https://mc.${cloudIdentifier}.commercetools.com/${entryPointUriPath}`;
 
 /**
  * @type {import('@commercetools-frontend/application-config').ConfigOptionsForCustomApplication}
@@ -9,11 +11,11 @@ const config = {
   cloudIdentifier: 'gcp-eu',
   env: {
     development: {
-      initialProjectKey: 'PROJECT_KEY',
+      initialProjectKey: process.env.CLOUD_IDENTIFIER || 'gcp-eu',
     },
     production: {
-      applicationId: 'TODO',
-      url: 'https://your_app_hostname.com',
+      applicationId: process.env.CUSTOM_APPLICATION_ID,
+      url: process.env.PREVIEW_URL || derivedUrl,
     },
   },
   oAuthScopes: {

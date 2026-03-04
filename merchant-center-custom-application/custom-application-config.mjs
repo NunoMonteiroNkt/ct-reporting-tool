@@ -29,24 +29,6 @@ const config = {
     permissions: [PERMISSIONS.View],
   },
   submenuLinks: [
-    /* {
-      uriPath: 'channels',
-      defaultLabel: 'Channels',
-      labelAllLocales: [],
-      permissions: [PERMISSIONS.View],
-    }, */
-    /*  {
-       uriPath: 'materials',
-       defaultLabel: 'Materials',
-       labelAllLocales: [],
-       permissions: [PERMISSIONS.View],
-     },
-     {
-       uriPath: 'product-types',
-       defaultLabel: 'ProductTypes',
-       labelAllLocales: [],
-       permissions: [PERMISSIONS.View],
-     }, */
     {
       uriPath: 'all-products',
       defaultLabel: 'All Products with Attributes',

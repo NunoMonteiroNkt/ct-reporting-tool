@@ -9,27 +9,51 @@ const config = {
   cloudIdentifier: 'gcp-eu',
   env: {
     development: {
-      initialProjectKey: 'my-project-key',
+      initialProjectKey: 'mynkt-production',
     },
     production: {
-      applicationId: '${env:CUSTOM_APPLICATION_ID}',
-      url: '${env:APPLICATION_URL}',
+      applicationId: 'cmlfevbsn000801v25qebfuak',
+      url: 'https://app-mynkt-tmd-stag-westeurope-001.azurewebsites.net/',
     },
   },
   oAuthScopes: {
     view: ['view_products', 'view_product_selections'],
     manage: ['manage_products'],
   },
-  icon: '',
+  icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
   mainMenuLink: {
     defaultLabel: 'Template starter',
     labelAllLocales: [],
     permissions: [PERMISSIONS.View],
   },
   submenuLinks: [
+    /* {
+      uriPath: 'channels',
+      defaultLabel: 'Channels',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    }, */
+    /*  {
+       uriPath: 'materials',
+       defaultLabel: 'Materials',
+       labelAllLocales: [],
+       permissions: [PERMISSIONS.View],
+     },
+     {
+       uriPath: 'product-types',
+       defaultLabel: 'ProductTypes',
+       labelAllLocales: [],
+       permissions: [PERMISSIONS.View],
+     }, */
     {
       uriPath: 'all-products',
       defaultLabel: 'All Products with Attributes',
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
+    },
+    {
+      uriPath: 'documents',
+      defaultLabel: 'All Variants Documents',
       labelAllLocales: [],
       permissions: [PERMISSIONS.View],
     }

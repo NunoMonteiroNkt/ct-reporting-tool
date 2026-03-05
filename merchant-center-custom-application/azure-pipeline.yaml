@@ -1,0 +1,108 @@
+# ============================================================
+# Azure Pipeline: Sync folder from Azure Repo → GitHub Repo
+# ============================================================
+
+trigger:
+  branches:
+    include:
+      - '*'
+  paths:
+    include:
+      - apps/ct-reporting-tool
+
+variables:
+  - group: ct-github-sync-secrets   # ← Must be first, as its own list item
+  - name: AZURE_SOURCE_FOLDER
+    value: 'apps/ct-reporting-tool'
+  - name: GITHUB_REPO
+    value: 'NunoMonteiroNkt/ct-reporting-tool'
+  - name: GITHUB_TARGET_FOLDER
+    value: 'merchant-center-custom-application'
+  - name: GITHUB_BRANCH
+    value: $(Build.SourceBranchName)
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+
+  # ── 1. Checkout the Azure Repo (full history) ─────────────
+  - checkout: self
+    fetchDepth: 0
+    displayName: 'Checkout Azure Repo'
+
+  # ── 2. Configure Git identity ─────────────────────────────
+  - script: |
+      git config --global user.email "azure-pipeline@sync-bot.com"
+      git config --global user.name  "Azure Sync Bot"
+    displayName: 'Configure Git identity'
+
+  # ── 3. Clone the target GitHub repository ─────────────────
+  - script: |
+      git clone \
+        https://$(GITHUB_USER):$(GITHUB_TOKEN)@github.com/$(GITHUB_REPO).git \
+        gh-repo
+    displayName: 'Clone GitHub repository'
+    env:
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
+      GITHUB_USER: $(GITHUB_USER)
+
+  # ── 4. Checkout or create matching branch in GitHub ───────
+  - script: |
+      set -e
+      cd gh-repo
+      BRANCH="$(Build.SourceBranchName)"
+
+      if git ls-remote --heads origin "$BRANCH" | grep -q "$BRANCH"; then
+        echo "Branch '$BRANCH' exists — checking it out."
+        git checkout "$BRANCH"
+      else
+        echo "Branch '$BRANCH' not found — creating it from default branch."
+        git checkout -b "$BRANCH"
+      fi
+    displayName: 'Checkout or create GitHub branch'
+
+  # ── 5. Sync the folder ────────────────────────────────────
+  - script: |
+      set -e
+
+      SOURCE_DIR="$(Build.SourcesDirectory)/$(AZURE_SOURCE_FOLDER)"
+      TARGET_DIR="gh-repo/$(GITHUB_TARGET_FOLDER)"
+
+      echo "Syncing from: $SOURCE_DIR"
+      echo "Syncing to:   $TARGET_DIR"
+
+      mkdir -p "$TARGET_DIR"
+      rsync -av --delete "$SOURCE_DIR/" "$TARGET_DIR/"
+
+      echo "Sync complete."
+    displayName: 'Rsync folder contents'
+
+  # ── 6. Commit and push to GitHub (only if there are changes)
+  - script: |
+      set -e
+      cd gh-repo
+
+      git add "$(GITHUB_TARGET_FOLDER)"
+
+      if git diff --cached --quiet; then
+        echo "No changes detected — skipping commit."
+        exit 0
+      fi
+
+      COMMIT_MSG="chore(sync): update $(GITHUB_TARGET_FOLDER) from Azure Repo
+
+      Source commit : $(Build.SourceVersion)
+      Source branch : $(Build.SourceBranchName)
+      Pipeline run  : $(Build.BuildId)"
+
+      git commit -m "$COMMIT_MSG"
+
+      # Explicit credentials in push URL (avoids cached auth issues)
+      git push https://$(GITHUB_USER):$(GITHUB_TOKEN)@github.com/$(GITHUB_REPO).git "$(GITHUB_BRANCH)"
+
+      echo "Changes pushed to GitHub successfully."
+    displayName: 'Commit and push to GitHub'
+    env:
+      GITHUB_TOKEN: $(GITHUB_TOKEN)
+      GITHUB_USER: $(GITHUB_USER)

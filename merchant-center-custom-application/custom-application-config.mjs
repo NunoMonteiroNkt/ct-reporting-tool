@@ -12,8 +12,8 @@ const config = {
       initialProjectKey: 'my-project-key',
     },
     production: {
-      applicationId: '${env:CUSTOM_APPLICATION_ID}',
-      url: '${env:APPLICATION_URL}',
+      applicationId: 'cmlfevbsn000801v25qebfuak',
+      url: '',
     },
   },
   oAuthScopes: {
